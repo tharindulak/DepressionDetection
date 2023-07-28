@@ -36,10 +36,6 @@ export const ButtonStyles = cx(css`
   margin-left: 10px !important;
 `);
 
-const validateNumberInput = (inputValue: string): string => {
-    return inputValue.replace(/\D/g, ""); // Remove any non-numeric characters
-};
-
 const SatisfactionData = () => {
     const [name, setName] = React.useState('');
     const [education, setEducation] = React.useState('');
@@ -71,7 +67,10 @@ const SatisfactionData = () => {
     const [yearsSinceLastPromotion, setYearsSinceLastPromotion] = React.useState('');
     const [yearsWithCurrManager, setYearsWithCurrManager] = React.useState('');
     const [allFieldsFilled, setAllFieldsFilled] = React.useState(false);
-    const [formData, setFormData] = React.useState({});
+
+    const validateNumberInput = (inputValue: any) => {
+        return inputValue.replace(/\D/g, ""); // Remove any non-numeric characters
+    };
 
     const checkAllFieldsFilled = () => {
         if (
@@ -175,7 +174,6 @@ const SatisfactionData = () => {
             yearsSinceLastPromotion,
             yearsWithCurrManager,
         };
-        setFormData(jsonData);
         try {
             const response = await axios.post('http://127.0.0.1:5000/satisfaction', jsonData);
             console.log('Response from server:', response.data);
@@ -219,8 +217,6 @@ const SatisfactionData = () => {
         yearsSinceLastPromotion,
         yearsWithCurrManager,
     ]);
-
-    console.log("Data", formData);
 
     return (
         <Container>
