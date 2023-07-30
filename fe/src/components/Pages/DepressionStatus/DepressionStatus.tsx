@@ -75,7 +75,7 @@ const DepressionStatus = () => {
     return (
         <Container>
             <Typography variant="h5" className={TitleStyles}>
-                Employee Satisfaction Data
+                Depression Status
             </Typography>
             <Grid container spacing={2}>
                 <Grid item xs={6}>

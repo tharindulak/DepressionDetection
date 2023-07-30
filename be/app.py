@@ -34,6 +34,7 @@ def getEmployeeData(employeeNumber):
     try:
         if employeeNumber in data_map:
             # Call Function
+            print ("Req recieved", employeeNumber)
             res = predict_employee_depression_level(data_map[employeeNumber])
             response = {"depressionStatus": res}
             return jsonify(response), 200
@@ -300,7 +301,6 @@ def preprocess_input_data(df):
 
 def predict_employee_depression_level(employee_data):
     # Load the dataset and preprocess the data
-    print ("Reached")
     df = pd.read_csv('WA_Fn-UseC_-HR-Employee-Attrition.csv')
     testElemnt = df.iloc[2]
     df = preprocess_input_data(df)

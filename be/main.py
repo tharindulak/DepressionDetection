@@ -2,13 +2,13 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression, LogisticRegression
-from sklearn.metrics import mean_squared_error, confusion_matrix, accuracy_score
+from sklearn.metrics import mean_squared_error, confusion_matrix, accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
 # Example usage:
 # Remove this once integrated with actual values
@@ -75,7 +75,6 @@ def linearRegression(df_pca):
                                                         random_state=42)
     # Create a linear regression model
     model = LinearRegression()
-
     # Train the model using the training data
     model.fit(X_train, y_train)
 
@@ -97,16 +96,19 @@ def linearRegression(df_pca):
     # Calculate confusion matrix
     cm = confusion_matrix(y_test_classes, y_pred_classes)
     print(cm)
-    # Accuracy score
-    accuracy = accuracy_score(y_test_classes, y_pred_classes)
-    print("Linear regression confusion matrix:\n", cm)
-    print("linear regression Accuracy score:", accuracy)
+
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['Not Depressed', 'Depressed'],
+                yticklabels=['Not Depressed', 'Depressed'])
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('LR Confusion Matrix')
+    plt.show()
 
 def logisticRegression(df_pca):
     X_train, X_test, y_train, y_test = train_test_split(df_pca.drop('DepressionLevel', axis=1),
                                                         df_pca['DepressionLevel'], test_size=0.2,
                                                         random_state=42)
-
     # Create a logistic regression model
     model = LogisticRegression()
 
@@ -127,9 +129,17 @@ def logisticRegression(df_pca):
     # Evaluate the performance of the model
     confusion_mat = confusion_matrix(y_test_classes, y_pred_classes)
     accuracy = accuracy_score(y_test_classes, y_pred_classes)
-
-    print("Logistic regression confusion matrix:\n", confusion_mat)
-    print("Logistic regression Accuracy score:", accuracy)
+    precision = precision_score(y_test_classes, y_pred_classes)
+    recall = recall_score(y_test_classes, y_pred_classes)
+    f1 = f1_score(y_test_classes, y_pred_classes)
+    auc = roc_auc_score(y_test_classes, y_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(confusion_mat, annot=True, fmt='d', cmap='Blues', xticklabels=['Not Depressed', 'Depressed'],
+                yticklabels=['Not Depressed', 'Depressed'])
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('Log Reg Confusion Matrix')
+    plt.show()
 
 def knn(df_pca):
     X_train, X_test, y_train, y_test = train_test_split(df_pca.drop('DepressionLevel', axis=1),
@@ -155,8 +165,19 @@ def knn(df_pca):
     # Evaluate the performance of the model
     confusion_mat = confusion_matrix(y_test_classes, y_pred_classes)
     accuracy = accuracy_score(y_test_classes, y_pred_classes)
+    precision = precision_score(y_test_classes, y_pred_classes)
+    recall = recall_score(y_test_classes, y_pred_classes)
+    f1 = f1_score(y_test_classes, y_pred_classes)
+    auc = roc_auc_score(y_test_classes, y_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(confusion_mat, annot=True, fmt='d', cmap='Blues', xticklabels=['Not Depressed', 'Depressed'],
+                yticklabels=['Not Depressed', 'Depressed'])
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('KNN Confusion Matrix')
+    plt.show()
     print("KNN confusion matrix:\n", confusion_mat)
-    print("KNN Accuracy score:", accuracy)
+    print("KNN Accuracy score:", accuracy, "precision", precision, "recall", recall, "f1", f1, "AUC", auc)
 
 def NaiveBayes(df_pca):
     X_train, X_test, y_train, y_test = train_test_split(df_pca.drop('DepressionLevel', axis=1),
@@ -177,9 +198,21 @@ def NaiveBayes(df_pca):
     # Evaluate the performance of the model
     confusion_mat = confusion_matrix(y_test_classes, y_pred_classes)
     accuracy = accuracy_score(y_test_classes, y_pred_classes)
+    precision = precision_score(y_test_classes, y_pred_classes)
+    recall = recall_score(y_test_classes, y_pred_classes)
+    f1 = f1_score(y_test_classes, y_pred_classes)
+    auc = roc_auc_score(y_test_classes, y_pred)
+
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(confusion_mat, annot=True, fmt='d', cmap='Blues', xticklabels=['Not Depressed', 'Depressed'],
+                yticklabels=['Not Depressed', 'Depressed'])
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('NB Confusion Matrix')
+    plt.show()
 
     print("Naive Bayes confusion matrix:\n", confusion_mat)
-    print("Naive Bayes Accuracy score:", accuracy)
+    print("Naive Bayes Accuracy score:", accuracy, "precision", precision, "recall", recall, "f1", f1, "AUC", auc)
 
 def randomForest(df_pca):
     X_train, X_test, y_train, y_test = train_test_split(df_pca.drop('DepressionLevel', axis=1),
@@ -206,8 +239,68 @@ def randomForest(df_pca):
     # Evaluate the performance of the model
     confusion_mat = confusion_matrix(y_test_classes, y_pred_classes)
     accuracy = accuracy_score(y_test_classes, y_pred_classes)
+    precision = precision_score(y_test_classes, y_pred_classes)
+    recall = recall_score(y_test_classes, y_pred_classes)
+    f1 = f1_score(y_test_classes, y_pred_classes)
+    auc = roc_auc_score(y_test_classes, y_pred)
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(confusion_mat, annot=True, fmt='d', cmap='Blues', xticklabels=['Not Depressed', 'Depressed'],
+                yticklabels=['Not Depressed', 'Depressed'])
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('RF Confusion Matrix')
+    plt.show()
     print('Random Forest Confusion Matrix:\n', confusion_mat)
-    print('Random Forest Accuracy:', accuracy)
+    print('Random Forest Accuracy:', accuracy, "precision", precision, "recall", recall, "f1", f1, "AUC", auc)
+
+def ensembleClassifier(df_pca):
+    X_train, X_test, y_train, y_test = train_test_split(df_pca.drop('DepressionLevel', axis=1),
+                                                        df_pca['DepressionLevel'], test_size=0.2,
+                                                        random_state=42)
+
+    # Create individual classifiers
+    logistic_reg = LogisticRegression()
+    random_forest = RandomForestClassifier(n_estimators=100, random_state=42)
+    knn_classifier = KNeighborsClassifier(n_neighbors=5)
+    naive_bayes = GaussianNB()
+
+    # Ensemble using VotingClassifier
+    ensemble = VotingClassifier(estimators=[('lr', logistic_reg), ('rf', random_forest),
+                                            ('knn', knn_classifier), ('nb', naive_bayes)],
+                                voting='hard')
+
+    # Train the ensemble model on the training set
+    ensemble.fit(X_train, y_train)
+
+    # Make predictions on the testing data
+    y_pred = ensemble.predict(X_test)
+
+    # Set threshold to convert continuous predictions to classes
+    threshold = 2
+
+    # Convert predictions to classes based on threshold
+    y_pred_classes = (y_pred > threshold).astype(int)
+    # Convert test to classes based on threshold
+    y_test_classes = (y_test > threshold).astype(int)
+
+    # Evaluate the performance of the ensemble model
+    confusion_mat = confusion_matrix(y_test_classes, y_pred_classes)
+    accuracy = accuracy_score(y_test_classes, y_pred_classes)
+    precision = precision_score(y_test_classes, y_pred_classes)
+    recall = recall_score(y_test_classes, y_pred_classes)
+    f1 = f1_score(y_test_classes, y_pred_classes)
+    auc = roc_auc_score(y_test_classes, y_pred)
+
+    plt.figure(figsize=(8, 6))
+    sns.heatmap(confusion_mat, annot=True, fmt='d', cmap='Blues', xticklabels=['Not Depressed', 'Depressed'],
+                yticklabels=['Not Depressed', 'Depressed'])
+    plt.xlabel('Predicted Label')
+    plt.ylabel('True Label')
+    plt.title('Ensemble Classifier Confusion Matrix')
+    plt.show()
+
+    print("Ensemble Classifier confusion matrix:\n", confusion_mat)
+    print("Ensemble Classifier Accuracy score:", accuracy, "precision", precision, "recall", recall, "f1", f1, "AUC", auc)
 
 def buildModel():
     df = pd.read_csv('WA_Fn-UseC_-HR-Employee-Attrition.csv')
@@ -230,7 +323,7 @@ def buildModel():
     # Check for duplicates
     print('Duplicated Values:', df.duplicated().sum())  # No duplicates in the dataset
 
-    # Create box plots
+    # Create box plots to find outliers
     createBoxPlotsForColumns(df)
     plt.show()
 
@@ -239,7 +332,6 @@ def buildModel():
 
     # Fit the scaler to the data and transform the Age and MonthlyIncome columns
     df[['Age', 'DailyRate', 'DistanceFromHome', 'EmployeeNumber', 'HourlyRate', 'MonthlyIncome', 'MonthlyRate', 'PercentSalaryHike', 'StandardHours', 'TotalWorkingYears', 'YearsAtCompany', 'YearsInCurrentRole', 'YearsWithCurrManager']] = scaler.fit_transform(df[['Age', 'DailyRate', 'DistanceFromHome', 'EmployeeNumber', 'HourlyRate', 'MonthlyIncome', 'MonthlyRate', 'PercentSalaryHike', 'StandardHours', 'TotalWorkingYears', 'YearsAtCompany', 'YearsInCurrentRole', 'YearsWithCurrManager']])
-    print('Scaled')
 
     # Convert categorical variables into numbers / Encoding
     convertCategoricalValuesNumeric(df)
@@ -262,6 +354,7 @@ def buildModel():
     knn(df_pca)
     NaiveBayes(df_pca)
     randomForest(df_pca)
+    ensembleClassifier(df_pca)
 
 def preprocess_input_data(df):
     # Calculate the DepressionLevel based on the equation
@@ -275,7 +368,7 @@ def preprocess_input_data(df):
     # Create a Standard Scaler object
     scaler = StandardScaler()
 
-    # Fit the scaler to the data and transform the Age and MonthlyIncome columns
+    # Fit the scaler to the data and transform
     df[['Age', 'DailyRate', 'DistanceFromHome', 'EmployeeNumber', 'HourlyRate', 'MonthlyIncome', 'MonthlyRate',
         'PercentSalaryHike', 'StandardHours', 'TotalWorkingYears', 'YearsAtCompany', 'YearsInCurrentRole',
         'YearsWithCurrManager']] = scaler.fit_transform(df[['Age', 'DailyRate', 'DistanceFromHome', 'EmployeeNumber',
@@ -335,5 +428,6 @@ def predict_employee_depression_level(employee_data):
     return employee_depression_level
 
 if __name__ == '__main__':
-    predicted_depression_level = predict_employee_depression_level(employee_data)
-    print("Predicted Depression Level:", predicted_depression_level)
+    buildModel()
+    # predicted_depression_level = predict_employee_depression_level(employee_data)
+    # print("Predicted Depression Level:", predicted_depression_level)
