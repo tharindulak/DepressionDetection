@@ -48,11 +48,11 @@ const Header = (props: {selectedMenu: string, onChange: (menu: string) => void})
                             </div>
                         </Menu>
                     </SidebarContent>
-                    <SidebarFooter>
-                        <Menu iconShape="square">
-                            <MenuItem icon={<FiLogOut />}>Logout</MenuItem>
-                        </Menu>
-                    </SidebarFooter>
+                    {/*<SidebarFooter>*/}
+                    {/*    <Menu iconShape="square">*/}
+                    {/*        <MenuItem icon={<FiLogOut />}>Logout</MenuItem>*/}
+                    {/*    </Menu>*/}
+                    {/*</SidebarFooter>*/}
                 </ProSidebar>
             </div>
         </>

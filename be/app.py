@@ -1,3 +1,5 @@
+import random
+
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import pandas as pd
@@ -302,7 +304,7 @@ def preprocess_input_data(df):
 def predict_employee_depression_level(employee_data):
     # Load the dataset and preprocess the data
     df = pd.read_csv('WA_Fn-UseC_-HR-Employee-Attrition.csv')
-    testElemnt = df.iloc[2]
+    testElemnt = df.iloc[random.randint(0, len(df) - 1)]
     df = preprocess_input_data(df)
 
     print("Hello", testElemnt)
